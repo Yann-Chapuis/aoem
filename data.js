@@ -204,6 +204,19 @@ const SERVERS = {
       },
     ],
   },
-  449: { snapshots: [] },
+  449: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "ekivoki",     alliance: "♛RI", region: "North Kingsland", power: 20201957 },
+          { rank: 2, name: "無題Untitled", alliance: "HoV", region: "East Kingsland",  power: 13169141 },
+          { rank: 3, name: "如意RUYI",     alliance: "HoV", region: "East Kingsland",  power: 12368448 },
+          { rank: 4, name: "娜娜Nina",     alliance: "HoV", region: "East Kingsland",  power: 11965181 },
+        ],
+        alliances: [],
+      },
+    ],
+  },
 
 };
