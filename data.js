@@ -1,15 +1,15 @@
 // ============================================================
-//  DONNÉES — à remplir à la main depuis les screenshots
+//  DATA — filled in by hand from screenshots
 // ============================================================
-//  Pour chaque serveur :
-//    date      : date du scan au format "JJ/MM/AAAA" (ou "" si pas encore scanné)
-//    players   : top joueurs   { rank, name, alliance, region, power }
+//  For each server:
+//    date      : scan date "DD/MM/YYYY" (or "" if not scanned yet)
+//    players   : top players   { rank, name, alliance, region, power }
 //    alliances : top alliances { rank, tag, name, region, allies, cities, power }
 //
-//  power : le chiffre brut sans espaces ni virgules (ex: 28916813)
+//  power : raw number without spaces or commas (e.g. 28916813)
 // ============================================================
 
-const MY_SERVER = 445; // notre serveur
+const MY_SERVER = 445; // our server
 
 const SERVERS = {
 

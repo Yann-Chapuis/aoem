@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AoEM — Scan Royaumes 440–449</title>
+<title>AoEM — Kingdoms 440–449 Scan</title>
 <style>
   :root {
     --bg: #14181f;
@@ -33,17 +33,30 @@
   header h1 span { color: var(--gold); }
   header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
 
-  /* ---- contrôles ---- */
-  .controls {
-    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
-    justify-content: space-between; margin-bottom: 16px;
+  /* ---- controls ---- */
+  .controls { margin-bottom: 16px; }
+
+  .servers {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
   }
-  select {
-    background: var(--panel2); color: var(--text);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 9px 14px; font-size: 0.95rem; cursor: pointer;
+  .srv-pill input { position: absolute; opacity: 0; pointer-events: none; }
+  .srv-pill span {
+    display: inline-block;
+    background: var(--panel2); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 7px 14px; font-size: 0.9rem; cursor: pointer;
+    user-select: none;
   }
-  select:focus { outline: 2px solid var(--accent); }
+  .srv-pill span:hover { color: var(--text); }
+  .srv-pill input:checked + span {
+    background: var(--accent); border-color: var(--accent);
+    color: #06121f; font-weight: 600;
+  }
+  .srv-pill.ours-pill span { border-color: var(--ours); }
+  .srv-pill.ours-pill input:checked + span {
+    background: var(--ours); border-color: var(--ours); color: #d9f5e8;
+  }
+  .srv-pill input:focus-visible + span { outline: 2px solid var(--accent); }
 
   .tabs { display: flex; gap: 6px; }
   .tab {
@@ -100,16 +113,16 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>⚔️ Age of Empires Mobile — <span>Royaumes 440–449</span></h1>
-    <p>Top joueurs &amp; alliances par puissance — scan manuel</p>
+    <h1>⚔️ Age of Empires Mobile — <span>Kingdoms 440–449</span></h1>
+    <p>Top players &amp; alliances by power — manual scan</p>
   </header>
 
   <div class="controls">
-    <select id="serverSelect"></select>
+    <div class="servers" id="serverRadios"></div>
     <div class="tabs">
-      <button class="tab active" data-tab="players">Joueurs</button>
+      <button class="tab active" data-tab="players">Players</button>
       <button class="tab" data-tab="alliances">Alliances</button>
-      <button class="tab" data-tab="servers">Serveurs</button>
+      <button class="tab" data-tab="servers">Servers</button>
     </div>
   </div>
 
@@ -123,20 +136,29 @@
 
 <script src="data.js"></script>
 <script>
-  const fmt = n => n.toLocaleString("fr-FR");
+  const fmt = n => n.toLocaleString("en-US");
   const serverIds = Object.keys(SERVERS).map(Number).sort((a, b) => a - b);
 
   let currentTab = "players";
   let currentServer = "all";
 
-  // ---- select serveur ----
-  const sel = document.getElementById("serverSelect");
-  sel.innerHTML =
-    `<option value="all">Tous les serveurs</option>` +
+  // ---- server radios ----
+  const radios = document.getElementById("serverRadios");
+  radios.innerHTML =
+    `<label class="srv-pill">
+       <input type="radio" name="server" value="all" checked>
+       <span>All servers</span>
+     </label>` +
     serverIds.map(id =>
-      `<option value="${id}" ${id === MY_SERVER ? "" : ""}>#${id}${id === MY_SERVER ? " — nous" : ""}</option>`
+      `<label class="srv-pill${id === MY_SERVER ? " ours-pill" : ""}">
+         <input type="radio" name="server" value="${id}">
+         <span>#${id}${id === MY_SERVER ? " ⭐" : ""}</span>
+       </label>`
     ).join("");
-  sel.addEventListener("change", () => { currentServer = sel.value; render(); });
+  radios.addEventListener("change", e => {
+    currentServer = e.target.value;
+    render();
+  });
 
   // ---- tabs ----
   document.querySelectorAll(".tab").forEach(btn => {
@@ -158,26 +180,26 @@
     return currentServer === "all" ? serverIds : [Number(currentServer)];
   }
 
-  // ---- rendu ----
+  // ---- rendering ----
   function render() {
     const content = document.getElementById("content");
     const metaDate = document.getElementById("metaDate");
     const metaOurs = document.getElementById("metaOurs");
 
     metaOurs.innerHTML = currentServer !== "all" && Number(currentServer) === MY_SERVER
-      ? `<span class="ours-badge">⭐ Notre serveur</span>` : "";
+      ? `<span class="ours-badge">⭐ Our server</span>` : "";
 
     if (currentTab === "servers") {
-      metaDate.textContent = "Classement des royaumes (puissance cumulée des alliances scannées)";
+      metaDate.textContent = "Kingdom ranking (cumulative power of scanned alliances)";
       content.innerHTML = renderServers();
       return;
     }
 
     if (currentServer !== "all") {
       const s = SERVERS[currentServer];
-      metaDate.textContent = s.date ? `Serveur #${currentServer} — scanné le ${s.date}` : `Serveur #${currentServer}`;
+      metaDate.textContent = s.date ? `Server #${currentServer} — scanned on ${s.date}` : `Server #${currentServer}`;
     } else {
-      metaDate.textContent = "Tous les serveurs confondus";
+      metaDate.textContent = "All servers combined";
     }
 
     content.innerHTML = currentTab === "players" ? renderPlayers() : renderAlliances();
@@ -194,9 +216,9 @@
 
     return `<table>
       <thead><tr>
-        <th>#</th>${all ? "<th>Serveur</th>" : ""}
-        <th>Joueur</th><th>Alliance</th><th>Région</th>
-        <th class="num">Puissance</th>
+        <th>#</th>${all ? "<th>Server</th>" : ""}
+        <th>Player</th><th>Alliance</th><th>Region</th>
+        <th class="num">Power</th>
       </tr></thead>
       <tbody>${rows.map((p, i) => `
         <tr class="${p.server === MY_SERVER ? "ours" : ""}">
@@ -221,10 +243,10 @@
 
     return `<table>
       <thead><tr>
-        <th>#</th>${all ? "<th>Serveur</th>" : ""}
-        <th>Tag</th><th>Alliance</th><th>Région</th>
-        <th class="num">Membres</th><th class="num">Villes</th>
-        <th class="num">Puissance</th>
+        <th>#</th>${all ? "<th>Server</th>" : ""}
+        <th>Tag</th><th>Alliance</th><th>Region</th>
+        <th class="num">Members</th><th class="num">Cities</th>
+        <th class="num">Power</th>
       </tr></thead>
       <tbody>${rows.map((a, i) => `
         <tr class="${a.server === MY_SERVER ? "ours" : ""}">
@@ -253,16 +275,16 @@
 
     return `<table>
       <thead><tr>
-        <th>#</th><th>Serveur</th><th>Scanné le</th>
-        <th>Top alliance</th><th>Top joueur</th>
-        <th class="num">Σ Puissance alliances</th>
-        <th class="num">Σ Puissance joueurs</th>
+        <th>#</th><th>Server</th><th>Scanned on</th>
+        <th>Top alliance</th><th>Top player</th>
+        <th class="num">Σ Alliance power</th>
+        <th class="num">Σ Player power</th>
       </tr></thead>
       <tbody>${rows.map((r, i) => `
         <tr class="${r.id === MY_SERVER ? "ours" : ""}">
           ${r.alliancePower ? rankCell(i + 1) : `<td class="rank nodata">—</td>`}
           <td class="srv">#${r.id}${r.id === MY_SERVER ? " ⭐" : ""}</td>
-          <td>${r.date || `<span class="nodata">non scanné</span>`}</td>
+          <td>${r.date || `<span class="nodata">not scanned</span>`}</td>
           <td>${r.topAlliance ? `<span class="tag">[${r.topAlliance.tag}]</span> ${r.topAlliance.name}` : `<span class="nodata">—</span>`}</td>
           <td>${r.topPlayer ? r.topPlayer.name : `<span class="nodata">—</span>`}</td>
           <td class="power">${r.alliancePower ? fmt(r.alliancePower) : ""}</td>
@@ -272,7 +294,7 @@
   }
 
   function emptyMsg() {
-    return `<div class="empty">Pas encore de données pour le serveur #${currentServer} — remplis <b>data.js</b> 📋</div>`;
+    return `<div class="empty">No data yet for server #${currentServer} — fill in <b>data.js</b> 📋</div>`;
   }
 
   render();
