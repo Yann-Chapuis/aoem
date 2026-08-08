@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AoEM — Scan Royaumes 440–449</title>
+<style>
+  :root {
+    --bg: #14181f;
+    --panel: #1c222c;
+    --panel2: #232b37;
+    --border: #303a48;
+    --text: #dde4ee;
+    --muted: #8b96a5;
+    --gold: #e8b23c;
+    --accent: #4da3ff;
+    --ours: #2e7d5b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 {
+    font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px;
+  }
+  header h1 span { color: var(--gold); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  /* ---- contrôles ---- */
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    justify-content: space-between; margin-bottom: 16px;
+  }
+  select {
+    background: var(--panel2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 14px; font-size: 0.95rem; cursor: pointer;
+  }
+  select:focus { outline: 2px solid var(--accent); }
+
+  .tabs { display: flex; gap: 6px; }
+  .tab {
+    background: var(--panel2); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 18px; font-size: 0.95rem; cursor: pointer;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--gold); border-color: var(--gold);
+    color: #1a1200; font-weight: 600;
+  }
+
+  .meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin: 4px 2px 10px; font-size: 0.85rem; color: var(--muted);
+  }
+  .meta .ours-badge {
+    background: var(--ours); color: #d9f5e8; border-radius: 6px;
+    padding: 2px 10px; font-size: 0.8rem;
+  }
+
+  /* ---- table ---- */
+  .table-box {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 620px; }
+  th, td { padding: 12px 14px; text-align: left; white-space: nowrap; }
+  th {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  td.num, th.num { text-align: right; }
+  td.power { color: var(--gold); font-variant-numeric: tabular-nums; text-align: right; }
+  td.rank { width: 52px; font-weight: 700; }
+  .rank-1 { color: #ffd257; }
+  .rank-2 { color: #c8d3e0; }
+  .rank-3 { color: #d59a6b; }
+  .tag { color: var(--gold); font-weight: 600; }
+  .srv { color: var(--accent); font-weight: 600; }
+  tr.ours td { background: rgba(46,125,91,0.16); }
+  tr.ours td:first-child { box-shadow: inset 3px 0 0 var(--ours); }
+  .empty {
+    padding: 40px; text-align: center; color: var(--muted); font-size: 0.95rem;
+  }
+  .nodata { color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>⚔️ Age of Empires Mobile — <span>Royaumes 440–449</span></h1>
+    <p>Top joueurs &amp; alliances par puissance — scan manuel</p>
+  </header>
+
+  <div class="controls">
+    <select id="serverSelect"></select>
+    <div class="tabs">
+      <button class="tab active" data-tab="players">Joueurs</button>
+      <button class="tab" data-tab="alliances">Alliances</button>
+      <button class="tab" data-tab="servers">Serveurs</button>
+    </div>
+  </div>
+
+  <div class="meta">
+    <span id="metaDate"></span>
+    <span id="metaOurs"></span>
+  </div>
+
+  <div class="table-box" id="content"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const fmt = n => n.toLocaleString("fr-FR");
+  const serverIds = Object.keys(SERVERS).map(Number).sort((a, b) => a - b);
+
+  let currentTab = "players";
+  let currentServer = "all";
+
+  // ---- select serveur ----
+  const sel = document.getElementById("serverSelect");
+  sel.innerHTML =
+    `<option value="all">Tous les serveurs</option>` +
+    serverIds.map(id =>
+      `<option value="${id}" ${id === MY_SERVER ? "" : ""}>#${id}${id === MY_SERVER ? " — nous" : ""}</option>`
+    ).join("");
+  sel.addEventListener("change", () => { currentServer = sel.value; render(); });
+
+  // ---- tabs ----
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentTab = btn.dataset.tab;
+      render();
+    });
+  });
+
+  function rankCell(r) {
+    const cls = r <= 3 ? ` rank-${r}` : "";
+    const medal = r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : r;
+    return `<td class="rank${cls}">${medal}</td>`;
+  }
+
+  function selectedServers() {
+    return currentServer === "all" ? serverIds : [Number(currentServer)];
+  }
+
+  // ---- rendu ----
+  function render() {
+    const content = document.getElementById("content");
+    const metaDate = document.getElementById("metaDate");
+    const metaOurs = document.getElementById("metaOurs");
+
+    metaOurs.innerHTML = currentServer !== "all" && Number(currentServer) === MY_SERVER
+      ? `<span class="ours-badge">⭐ Notre serveur</span>` : "";
+
+    if (currentTab === "servers") {
+      metaDate.textContent = "Classement des royaumes (puissance cumulée des alliances scannées)";
+      content.innerHTML = renderServers();
+      return;
+    }
+
+    if (currentServer !== "all") {
+      const s = SERVERS[currentServer];
+      metaDate.textContent = s.date ? `Serveur #${currentServer} — scanné le ${s.date}` : `Serveur #${currentServer}`;
+    } else {
+      metaDate.textContent = "Tous les serveurs confondus";
+    }
+
+    content.innerHTML = currentTab === "players" ? renderPlayers() : renderAlliances();
+  }
+
+  function renderPlayers() {
+    const all = currentServer === "all";
+    const rows = [];
+    for (const id of selectedServers()) {
+      for (const p of SERVERS[id].players) rows.push({ ...p, server: id });
+    }
+    if (!rows.length) return emptyMsg();
+    rows.sort((a, b) => b.power - a.power);
+
+    return `<table>
+      <thead><tr>
+        <th>#</th>${all ? "<th>Serveur</th>" : ""}
+        <th>Joueur</th><th>Alliance</th><th>Région</th>
+        <th class="num">Puissance</th>
+      </tr></thead>
+      <tbody>${rows.map((p, i) => `
+        <tr class="${p.server === MY_SERVER ? "ours" : ""}">
+          ${rankCell(i + 1)}
+          ${all ? `<td class="srv">#${p.server}</td>` : ""}
+          <td>${p.name}</td>
+          <td class="tag">[${p.alliance}]</td>
+          <td>${p.region || "—"}</td>
+          <td class="power">${fmt(p.power)}</td>
+        </tr>`).join("")}
+      </tbody></table>`;
+  }
+
+  function renderAlliances() {
+    const all = currentServer === "all";
+    const rows = [];
+    for (const id of selectedServers()) {
+      for (const a of SERVERS[id].alliances) rows.push({ ...a, server: id });
+    }
+    if (!rows.length) return emptyMsg();
+    rows.sort((a, b) => b.power - a.power);
+
+    return `<table>
+      <thead><tr>
+        <th>#</th>${all ? "<th>Serveur</th>" : ""}
+        <th>Tag</th><th>Alliance</th><th>Région</th>
+        <th class="num">Membres</th><th class="num">Villes</th>
+        <th class="num">Puissance</th>
+      </tr></thead>
+      <tbody>${rows.map((a, i) => `
+        <tr class="${a.server === MY_SERVER ? "ours" : ""}">
+          ${rankCell(i + 1)}
+          ${all ? `<td class="srv">#${a.server}</td>` : ""}
+          <td class="tag">[${a.tag}]</td>
+          <td>${a.name}</td>
+          <td>${a.region || "—"}</td>
+          <td class="num">${a.allies != null ? fmt(a.allies) : "—"}</td>
+          <td class="num">${a.cities != null ? fmt(a.cities) : "—"}</td>
+          <td class="power">${fmt(a.power)}</td>
+        </tr>`).join("")}
+      </tbody></table>`;
+  }
+
+  function renderServers() {
+    const rows = serverIds.map(id => {
+      const s = SERVERS[id];
+      const alliancePower = s.alliances.reduce((sum, a) => sum + a.power, 0);
+      const playerPower = s.players.reduce((sum, p) => sum + p.power, 0);
+      const topAlliance = s.alliances[0] || null;
+      const topPlayer = s.players[0] || null;
+      return { id, date: s.date, alliancePower, playerPower, topAlliance, topPlayer };
+    });
+    rows.sort((a, b) => b.alliancePower - a.alliancePower);
+
+    return `<table>
+      <thead><tr>
+        <th>#</th><th>Serveur</th><th>Scanné le</th>
+        <th>Top alliance</th><th>Top joueur</th>
+        <th class="num">Σ Puissance alliances</th>
+        <th class="num">Σ Puissance joueurs</th>
+      </tr></thead>
+      <tbody>${rows.map((r, i) => `
+        <tr class="${r.id === MY_SERVER ? "ours" : ""}">
+          ${r.alliancePower ? rankCell(i + 1) : `<td class="rank nodata">—</td>`}
+          <td class="srv">#${r.id}${r.id === MY_SERVER ? " ⭐" : ""}</td>
+          <td>${r.date || `<span class="nodata">non scanné</span>`}</td>
+          <td>${r.topAlliance ? `<span class="tag">[${r.topAlliance.tag}]</span> ${r.topAlliance.name}` : `<span class="nodata">—</span>`}</td>
+          <td>${r.topPlayer ? r.topPlayer.name : `<span class="nodata">—</span>`}</td>
+          <td class="power">${r.alliancePower ? fmt(r.alliancePower) : ""}</td>
+          <td class="power">${r.playerPower ? fmt(r.playerPower) : ""}</td>
+        </tr>`).join("")}
+      </tbody></table>`;
+  }
+
+  function emptyMsg() {
+    return `<div class="empty">Pas encore de données pour le serveur #${currentServer} — remplis <b>data.js</b> 📋</div>`;
+  }
+
+  render();
+</script>
+</body>
+</html>
