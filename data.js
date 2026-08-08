@@ -199,7 +199,12 @@ const SERVERS = {
           { rank: 3, name: "如意RUYI",     alliance: "HoV", region: "East Kingsland",  power: 12368448 },
           { rank: 4, name: "娜娜Nina",     alliance: "HoV", region: "East Kingsland",  power: 11965181 },
         ],
-        alliances: [],
+        alliances: [
+          { rank: 1, tag: "♛RI", name: "♛Royalty",      region: "Kyuno",    allies: 163, cities: 122, power: 558485290 },
+          { rank: 2, tag: "HoV", name: "HeroesOfValor", region: "Eastland", allies: 130, cities: 96,  power: 474816538 },
+          { rank: 3, tag: "VIP", name: "Gangstar",      region: "Neilos",   allies: 82,  cities: 41,  power: 68562009 },
+          { rank: 4, tag: "Try", name: "Truvaa",        region: "Neilos",   allies: 92,  cities: 39,  power: 55876706 },
+        ],
       },
     ],
   },
