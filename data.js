@@ -166,7 +166,25 @@ const SERVERS = {
       },
     ],
   },
-  447: { snapshots: [] },
+  447: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "Bigaktonaj", alliance: "HUN", region: "North Kingsland", power: 18560375 },
+          { rank: 2, name: "Hakage",     alliance: "HUN", region: "Eastland",        power: 16598351 },
+          { rank: 3, name: "61RTE61",    alliance: "HUN", region: "Kingsland",       power: 14663335 },
+          { rank: 4, name: "Kassidyd",   alliance: "HUN", region: "North Kingsland", power: 13524945 },
+        ],
+        alliances: [
+          { rank: 1, tag: "HUN", name: "BLODY°HUNTERS",  region: "Kyuno",    allies: 168, cities: 111, power: 739283668 },
+          { rank: 2, tag: "GFT", name: "♣GoodFernet♣",   region: "Olympia",  allies: 150, cities: 124, power: 613156582 },
+          { rank: 3, tag: "ELD", name: "ELDORA",         region: "Tinir",    allies: 110, cities: 56,  power: 133534823 },
+          { rank: 4, tag: "ESM", name: "EmperorsMember", region: "Eastland", allies: 83,  cities: 46,  power: 115809134 },
+        ],
+      },
+    ],
+  },
   448: { snapshots: [] },
   449: { snapshots: [] },
 
