@@ -128,7 +128,25 @@ const SERVERS = {
       },
     ],
   },
-  445: { snapshots: [] },
+  445: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "Ragnaroks10", alliance: "PHX", region: "Kingsland", power: 31819907 },
+          { rank: 2, name: "Khelbin戦争",  alliance: "JUD", region: "Kingsland", power: 27750334 },
+          { rank: 3, name: "Alohagrown",  alliance: "JUD", region: "Kingsland", power: 23652381 },
+          { rank: 4, name: "Wonju",       alliance: "JUD", region: "Kingsland", power: 20522102 },
+        ],
+        alliances: [
+          { rank: 1, tag: "JUD", name: "SolemnJudgment", region: "Gaul",   allies: 169, cities: 129, power: 1141548165 },
+          { rank: 2, tag: "PHX", name: "PhoenixDynast",  region: "Neilos", allies: 154, cities: 96,  power: 681198170 },
+          { rank: 3, tag: "MYT", name: "Mythos",         region: "Tinir",  allies: 131, cities: 99,  power: 575968846 },
+          { rank: 4, tag: "ANT", name: "Antisocial",     region: "Neilos", allies: 124, cities: 31,  power: 159021847 },
+        ],
+      },
+    ],
+  },
   446: { snapshots: [] },
   447: { snapshots: [] },
   448: { snapshots: [] },
