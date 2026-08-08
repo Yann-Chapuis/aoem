@@ -71,7 +71,25 @@ const SERVERS = {
       },
     ],
   },
-  442: { snapshots: [] },
+  442: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "KociciTata",  alliance: "LGX", region: "Kingsland", power: 66307955 },
+          { rank: 2, name: "Vestri",      alliance: "LGV", region: "Kingsland", power: 27337843 },
+          { rank: 3, name: "Screach",     alliance: "LGV", region: "Kingsland", power: 25114435 },
+          { rank: 4, name: "ᙎElTurcoᙎ",   alliance: "LGV", region: "Kingsland", power: 18353614 },
+        ],
+        alliances: [
+          { rank: 1, tag: "LGV", name: "LegionVI",  region: "Olympia", allies: 163, cities: 132, power: 1065024699 },
+          { rank: 2, tag: "RBN", name: "ReborN",    region: "Neilos",  allies: 124, cities: 73,  power: 238554002 },
+          { rank: 3, tag: "LGX", name: "LegionX",   region: "Kyuno",   allies: 23,  cities: 116, power: 175102715 },
+          { rank: 4, tag: "БОГ", name: "Мырусские", region: "Gaul",    allies: 59,  cities: 45,  power: 72639305 },
+        ],
+      },
+    ],
+  },
   443: { snapshots: [] },
   444: { snapshots: [] },
   445: { snapshots: [] },
