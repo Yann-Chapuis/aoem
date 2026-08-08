@@ -15,6 +15,8 @@
     --gold: #e8b23c;
     --accent: #4da3ff;
     --ours: #2e7d5b;
+    --up: #4fc37f;
+    --down: #e06a5a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -24,7 +26,7 @@
     min-height: 100vh;
     padding: 24px 16px 60px;
   }
-  .wrap { max-width: 980px; margin: 0 auto; }
+  .wrap { max-width: 1020px; margin: 0 auto; }
 
   header { text-align: center; margin-bottom: 24px; }
   header h1 {
@@ -84,17 +86,20 @@
     background: var(--panel); border: 1px solid var(--border);
     border-radius: 12px; overflow-x: auto;
   }
-  table { width: 100%; border-collapse: collapse; min-width: 620px; }
+  table { width: 100%; border-collapse: collapse; min-width: 680px; }
   th, td { padding: 12px 14px; text-align: left; white-space: nowrap; }
   th {
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;
     color: var(--muted); border-bottom: 1px solid var(--border);
     font-weight: 600;
   }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text); }
   tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: rgba(255,255,255,0.03); }
   td.num, th.num { text-align: right; }
+  td.num { font-variant-numeric: tabular-nums; }
   td.power { color: var(--gold); font-variant-numeric: tabular-nums; text-align: right; }
   td.rank { width: 52px; font-weight: 700; }
   .rank-1 { color: #ffd257; }
@@ -102,6 +107,11 @@
   .rank-3 { color: #d59a6b; }
   .tag { color: var(--gold); font-weight: 600; }
   .srv { color: var(--accent); font-weight: 600; }
+  td[data-goto], tr[data-goto] { cursor: pointer; }
+  td[data-goto]:hover { text-decoration: underline; }
+  .delta-up { color: var(--up); }
+  .delta-down { color: var(--down); }
+  .delta-new { color: var(--accent); font-weight: 600; font-size: 0.8rem; }
   tr.ours td { background: rgba(46,125,91,0.16); }
   tr.ours td:first-child { box-shadow: inset 3px 0 0 var(--ours); }
   .empty {
@@ -142,6 +152,23 @@
   let currentTab = "players";
   let currentServer = "all";
 
+  // default sort = power ranking; click a header to re-sort
+  const sortState = {
+    players:   { key: "rank", dir: 1 },
+    alliances: { key: "rank", dir: 1 },
+    servers:   { key: "rank", dir: 1 },
+  };
+
+  // ---- snapshot helpers ----
+  const parseDate = d => {
+    const [dd, mm, yy] = d.split("/").map(Number);
+    return new Date(yy, mm - 1, dd).getTime();
+  };
+  const snaps = id => (SERVERS[id].snapshots || [])
+    .slice().sort((a, b) => parseDate(a.date) - parseDate(b.date));
+  const latest = id => { const s = snaps(id); return s[s.length - 1] || null; };
+  const previous = id => { const s = snaps(id); return s.length > 1 ? s[s.length - 2] : null; };
+
   // ---- server radios ----
   const radios = document.getElementById("serverRadios");
   radios.innerHTML =
@@ -161,19 +188,67 @@
   });
 
   // ---- tabs ----
+  function setTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll(".tab").forEach(b =>
+      b.classList.toggle("active", b.dataset.tab === tab));
+  }
   document.querySelectorAll(".tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentTab = btn.dataset.tab;
-      render();
-    });
+    btn.addEventListener("click", () => { setTab(btn.dataset.tab); render(); });
   });
 
+  // ---- clicks inside the table (sort headers + go-to-server) ----
+  document.getElementById("content").addEventListener("click", e => {
+    const th = e.target.closest("th[data-key]");
+    if (th) {
+      const s = sortState[currentTab];
+      if (s.key === th.dataset.key) s.dir = -s.dir;
+      else { s.key = th.dataset.key; s.dir = th.dataset.numeric ? -1 : 1; }
+      render();
+      return;
+    }
+    const goto = e.target.closest("[data-goto]");
+    if (goto) {
+      currentServer = goto.dataset.goto;
+      const input = radios.querySelector(`input[value="${currentServer}"]`);
+      if (input) input.checked = true;
+      if (currentTab === "servers") setTab("players");
+      render();
+    }
+  });
+
+  // ---- rendering helpers ----
   function rankCell(r) {
     const cls = r <= 3 ? ` rank-${r}` : "";
     const medal = r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : r;
     return `<td class="rank${cls}">${medal}</td>`;
+  }
+
+  function th(label, key, opts = {}) {
+    const s = sortState[currentTab];
+    const arrow = s.key === key ? (s.dir === -1 ? " ▼" : " ▲") : "";
+    return `<th class="${opts.num ? "num " : ""}sortable"
+                data-key="${key}" ${opts.num ? 'data-numeric="1"' : ""}>${label}${arrow}</th>`;
+  }
+
+  function deltaCell(d, isNew) {
+    if (isNew) return `<td class="num delta-new">NEW</td>`;
+    if (d == null) return `<td class="num nodata">—</td>`;
+    if (d === 0) return `<td class="num nodata">=</td>`;
+    const up = d > 0;
+    return `<td class="num ${up ? "delta-up" : "delta-down"}">${up ? "▲" : "▼"} ${fmt(Math.abs(d))}</td>`;
+  }
+
+  function applySort(rows, accessors) {
+    const s = sortState[currentTab];
+    const acc = accessors[s.key] || accessors.rank;
+    rows.sort((a, b) => {
+      const va = acc(a), vb = acc(b);
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      return (typeof va === "string" ? va.localeCompare(vb) : va - vb) * s.dir;
+    });
   }
 
   function selectedServers() {
@@ -190,16 +265,18 @@
       ? `<span class="ours-badge">⭐ Our server</span>` : "";
 
     if (currentTab === "servers") {
-      metaDate.textContent = "Kingdom ranking — top 4 alliances combined power";
+      metaDate.textContent = "Kingdom ranking — top 4 alliances combined power · click a row to open a server";
       content.innerHTML = renderServers();
       return;
     }
 
     if (currentServer !== "all") {
-      const s = SERVERS[currentServer];
-      metaDate.textContent = s.date ? `Server #${currentServer} — scanned on ${s.date}` : `Server #${currentServer}`;
+      const snap = latest(currentServer);
+      metaDate.textContent = snap
+        ? `Server #${currentServer} — scanned on ${snap.date}`
+        : `Server #${currentServer}`;
     } else {
-      metaDate.textContent = "All servers combined";
+      metaDate.textContent = "All servers combined — latest scan of each server";
     }
 
     content.innerHTML = currentTab === "players" ? renderPlayers() : renderAlliances();
@@ -209,25 +286,47 @@
     const all = currentServer === "all";
     const rows = [];
     for (const id of selectedServers()) {
-      for (const p of SERVERS[id].players) rows.push({ ...p, server: id });
+      const snap = latest(id);
+      if (!snap) continue;
+      const prev = previous(id);
+      const prevPower = prev ? Object.fromEntries(prev.players.map(p => [p.name, p.power])) : null;
+      for (const p of snap.players) {
+        rows.push({
+          ...p, server: id,
+          delta: prevPower ? (prevPower[p.name] != null ? p.power - prevPower[p.name] : null) : undefined,
+          isNew: !!prevPower && prevPower[p.name] == null,
+        });
+      }
     }
     if (!rows.length) return emptyMsg();
+
     rows.sort((a, b) => b.power - a.power);
+    rows.forEach((r, i) => r.powerRank = i + 1);
+    applySort(rows, {
+      rank: r => r.powerRank,
+      server: r => r.server,
+      name: r => r.name,
+      alliance: r => r.alliance,
+      region: r => r.region || "",
+      power: r => r.power,
+      delta: r => r.delta ?? null,
+    });
 
     return `<table>
       <thead><tr>
-        <th>#</th>${all ? "<th>Server</th>" : ""}
-        <th>Player</th><th>Alliance</th><th>Region</th>
-        <th class="num">Power</th>
+        ${th("#", "rank")}${all ? th("Server", "server") : ""}
+        ${th("Player", "name")}${th("Alliance", "alliance")}${th("Region", "region")}
+        ${th("Power", "power", { num: 1 })}${th("Δ", "delta", { num: 1 })}
       </tr></thead>
-      <tbody>${rows.map((p, i) => `
+      <tbody>${rows.map(p => `
         <tr class="${p.server === MY_SERVER ? "ours" : ""}">
-          ${rankCell(i + 1)}
-          ${all ? `<td class="srv">#${p.server}</td>` : ""}
+          ${rankCell(p.powerRank)}
+          ${all ? `<td class="srv" data-goto="${p.server}">#${p.server}</td>` : ""}
           <td>${p.name}</td>
           <td class="tag">[${p.alliance}]</td>
           <td>${p.region || "—"}</td>
           <td class="power">${fmt(p.power)}</td>
+          ${deltaCell(p.delta, p.isNew)}
         </tr>`).join("")}
       </tbody></table>`;
   }
@@ -236,56 +335,98 @@
     const all = currentServer === "all";
     const rows = [];
     for (const id of selectedServers()) {
-      for (const a of SERVERS[id].alliances) rows.push({ ...a, server: id });
+      const snap = latest(id);
+      if (!snap) continue;
+      const prev = previous(id);
+      const prevPower = prev ? Object.fromEntries(prev.alliances.map(a => [a.tag, a.power])) : null;
+      for (const a of snap.alliances) {
+        rows.push({
+          ...a, server: id,
+          delta: prevPower ? (prevPower[a.tag] != null ? a.power - prevPower[a.tag] : null) : undefined,
+          isNew: !!prevPower && prevPower[a.tag] == null,
+        });
+      }
     }
     if (!rows.length) return emptyMsg();
+
     rows.sort((a, b) => b.power - a.power);
+    rows.forEach((r, i) => r.powerRank = i + 1);
+    applySort(rows, {
+      rank: r => r.powerRank,
+      server: r => r.server,
+      tag: r => r.tag,
+      name: r => r.name,
+      region: r => r.region || "",
+      allies: r => r.allies ?? null,
+      cities: r => r.cities ?? null,
+      power: r => r.power,
+      delta: r => r.delta ?? null,
+    });
 
     return `<table>
       <thead><tr>
-        <th>#</th>${all ? "<th>Server</th>" : ""}
-        <th>Tag</th><th>Alliance</th><th>Region</th>
-        <th class="num">Members</th><th class="num">Cities</th>
-        <th class="num">Power</th>
+        ${th("#", "rank")}${all ? th("Server", "server") : ""}
+        ${th("Tag", "tag")}${th("Alliance", "name")}${th("Region", "region")}
+        ${th("Members", "allies", { num: 1 })}${th("Cities", "cities", { num: 1 })}
+        ${th("Power", "power", { num: 1 })}${th("Δ", "delta", { num: 1 })}
       </tr></thead>
-      <tbody>${rows.map((a, i) => `
+      <tbody>${rows.map(a => `
         <tr class="${a.server === MY_SERVER ? "ours" : ""}">
-          ${rankCell(i + 1)}
-          ${all ? `<td class="srv">#${a.server}</td>` : ""}
+          ${rankCell(a.powerRank)}
+          ${all ? `<td class="srv" data-goto="${a.server}">#${a.server}</td>` : ""}
           <td class="tag">[${a.tag}]</td>
           <td>${a.name}</td>
           <td>${a.region || "—"}</td>
           <td class="num">${a.allies != null ? fmt(a.allies) : "—"}</td>
           <td class="num">${a.cities != null ? fmt(a.cities) : "—"}</td>
           <td class="power">${fmt(a.power)}</td>
+          ${deltaCell(a.delta, a.isNew)}
         </tr>`).join("")}
       </tbody></table>`;
   }
 
   function renderServers() {
+    const top4 = snap => snap ? snap.alliances.slice(0, 4).reduce((s, a) => s + a.power, 0) : 0;
     const rows = serverIds.map(id => {
-      const s = SERVERS[id];
-      const alliancePower = s.alliances.slice(0, 4).reduce((sum, a) => sum + a.power, 0);
-      const topAlliance = s.alliances[0] || null;
-      const topPlayer = s.players[0] || null;
-      return { id, date: s.date, alliancePower, topAlliance, topPlayer };
+      const snap = latest(id), prev = previous(id);
+      const alliancePower = top4(snap);
+      return {
+        id,
+        date: snap ? snap.date : "",
+        alliancePower,
+        delta: prev ? alliancePower - top4(prev) : undefined,
+        topAlliance: snap ? snap.alliances[0] : null,
+        topPlayer: snap ? snap.players[0] : null,
+      };
     });
-    rows.sort((a, b) => b.alliancePower - a.alliancePower);
+
+    rows.slice().sort((a, b) => b.alliancePower - a.alliancePower)
+      .forEach((r, i) => r.powerRank = r.alliancePower ? i + 1 : null);
+    applySort(rows, {
+      rank: r => r.powerRank,
+      server: r => r.id,
+      date: r => r.date ? parseDate(r.date) : null,
+      topAlliance: r => r.topAlliance ? r.topAlliance.name : null,
+      topPlayer: r => r.topPlayer ? r.topPlayer.name : null,
+      power: r => r.alliancePower || null,
+      delta: r => r.delta ?? null,
+    });
 
     return `<table>
       <thead><tr>
-        <th>#</th><th>Server</th><th>Scanned on</th>
-        <th>Top alliance</th><th>Top player</th>
-        <th class="num">Top 4 alliances power</th>
+        ${th("#", "rank")}${th("Server", "server")}${th("Scanned on", "date")}
+        ${th("Top alliance", "topAlliance")}${th("Top player", "topPlayer")}
+        ${th("Top 4 alliances power", "power", { num: 1 })}${th("Δ", "delta", { num: 1 })}
       </tr></thead>
-      <tbody>${rows.map((r, i) => `
-        <tr class="${r.id === MY_SERVER ? "ours" : ""}">
-          ${r.alliancePower ? rankCell(i + 1) : `<td class="rank nodata">—</td>`}
+      <tbody>${rows.map(r => `
+        <tr class="${r.id === MY_SERVER ? "ours" : ""}" data-goto="${r.id}">
+          ${r.powerRank ? rankCell(r.powerRank) : `<td class="rank nodata">—</td>`}
           <td class="srv">#${r.id}${r.id === MY_SERVER ? " ⭐" : ""}</td>
           <td>${r.date || `<span class="nodata">not scanned</span>`}</td>
           <td>${r.topAlliance ? `<span class="tag">[${r.topAlliance.tag}]</span> ${r.topAlliance.name}` : `<span class="nodata">—</span>`}</td>
           <td>${r.topPlayer ? r.topPlayer.name : `<span class="nodata">—</span>`}</td>
           <td class="power">${r.alliancePower ? fmt(r.alliancePower) : ""}</td>
+          ${r.alliancePower ? deltaCell(r.delta, false) : `<td class="num nodata">—</td>`}
         </tr>`).join("")}
       </tbody></table>`;
   }

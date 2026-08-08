@@ -1,8 +1,12 @@
 // ============================================================
 //  DATA — filled in by hand from screenshots
 // ============================================================
-//  For each server:
-//    date      : scan date "DD/MM/YYYY" (or "" if not scanned yet)
+//  Each server has a list of dated snapshots (history).
+//  A new scan = a new snapshot appended to the list — never
+//  overwrite an old one, that's what powers the Δ columns.
+//
+//  snapshot:
+//    date      : scan date "DD/MM/YYYY"
 //    players   : top players   { rank, name, alliance, region, power }
 //    alliances : top alliances { rank, tag, name, region, allies, cities, power }
 //
@@ -14,29 +18,33 @@ const MY_SERVER = 445; // our server
 const SERVERS = {
 
   440: {
-    date: "08/08/2026",
-    players: [
-      { rank: 1, name: "ArmyBTS",      alliance: "WRE", region: "Kingsland", power: 28916813 },
-      { rank: 2, name: "VELDORA~",     alliance: "EYM", region: "Kingsland", power: 28907710 },
-      { rank: 3, name: "acknowlegme",  alliance: "N三Ø", region: "Kingsland", power: 22495437 },
-      { rank: 4, name: "Davyjones483", alliance: "WAR", region: "Kingsland", power: 21277556 },
-    ],
-    alliances: [
-      { rank: 1, tag: "WAR", name: "440Dragons",     region: "Gaul",     allies: 169, cities: 149, power: 971940727 },
-      { rank: 2, tag: "EYM", name: "ElysiumWarBand", region: "Eastland", allies: 162, cities: 124, power: 795198916 },
-      { rank: 3, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 128, cities: 112, power: 499956720 },
-      { rank: 4, tag: "N三Ø", name: "E",              region: "Tinir",    allies: 126, cities: 108, power: 387091001 },
+    snapshots: [
+      {
+        date: "08/08/2026",
+        players: [
+          { rank: 1, name: "ArmyBTS",      alliance: "WRE", region: "Kingsland", power: 28916813 },
+          { rank: 2, name: "VELDORA~",     alliance: "EYM", region: "Kingsland", power: 28907710 },
+          { rank: 3, name: "acknowlegme",  alliance: "N三Ø", region: "Kingsland", power: 22495437 },
+          { rank: 4, name: "Davyjones483", alliance: "WAR", region: "Kingsland", power: 21277556 },
+        ],
+        alliances: [
+          { rank: 1, tag: "WAR", name: "440Dragons",     region: "Gaul",     allies: 169, cities: 149, power: 971940727 },
+          { rank: 2, tag: "EYM", name: "ElysiumWarBand", region: "Eastland", allies: 162, cities: 124, power: 795198916 },
+          { rank: 3, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 128, cities: 112, power: 499956720 },
+          { rank: 4, tag: "N三Ø", name: "E",              region: "Tinir",    allies: 126, cities: 108, power: 387091001 },
+        ],
+      },
     ],
   },
 
-  441: { date: "", players: [], alliances: [] },
-  442: { date: "", players: [], alliances: [] },
-  443: { date: "", players: [], alliances: [] },
-  444: { date: "", players: [], alliances: [] },
-  445: { date: "", players: [], alliances: [] },
-  446: { date: "", players: [], alliances: [] },
-  447: { date: "", players: [], alliances: [] },
-  448: { date: "", players: [], alliances: [] },
-  449: { date: "", players: [], alliances: [] },
+  441: { snapshots: [] },
+  442: { snapshots: [] },
+  443: { snapshots: [] },
+  444: { snapshots: [] },
+  445: { snapshots: [] },
+  446: { snapshots: [] },
+  447: { snapshots: [] },
+  448: { snapshots: [] },
+  449: { snapshots: [] },
 
 };
