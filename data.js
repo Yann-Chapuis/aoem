@@ -147,7 +147,25 @@ const SERVERS = {
       },
     ],
   },
-  446: { snapshots: [] },
+  446: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "PPGW",    alliance: "STS", region: "Kingsland",       power: 38904224 },
+          { rank: 2, name: "~Bug~",   alliance: "STS", region: "Kingsland",       power: 24419816 },
+          { rank: 3, name: "출발",     alliance: "THO", region: "North Kingsland", power: 18574767 },
+          { rank: 4, name: "LordGWW", alliance: "STS", region: "Kingsland",       power: 18197823 },
+        ],
+        alliances: [
+          { rank: 1, tag: "STS", name: "SPARTANICUS", region: "Gaul",     allies: 162, cities: 114, power: 796897498 },
+          { rank: 2, tag: "THO", name: "THEORDER",    region: "Kyuno",    allies: 161, cities: 117, power: 685523525 },
+          { rank: 3, tag: "FAM", name: "ROYALF4MILY", region: "Eastland", allies: 86,  cities: 117, power: 315373205 },
+          { rank: 4, tag: "NØM", name: "NØMERCY",     region: "Gaul",     allies: 81,  cities: 22,  power: 80676389 },
+        ],
+      },
+    ],
+  },
   447: { snapshots: [] },
   448: { snapshots: [] },
   449: { snapshots: [] },
