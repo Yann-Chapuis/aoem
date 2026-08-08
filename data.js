@@ -185,7 +185,25 @@ const SERVERS = {
       },
     ],
   },
-  448: { snapshots: [] },
+  448: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "Halopopo", alliance: "RUN", region: "West Kingsland",  power: 36984559 },
+          { rank: 2, name: "Thor008",  alliance: "T1S", region: "East Kingsland",  power: 25111950 },
+          { rank: 3, name: "터비",      alliance: "RUN", region: "West Kingsland",  power: 17816790 },
+          { rank: 4, name: "×Ren",     alliance: "NR¹", region: "North Kingsland", power: 16770947 },
+        ],
+        alliances: [
+          { rank: 1, tag: "NR¹", name: "NightRaid¹",    region: "Kyuno",  allies: 170, cities: 126, power: 757606052 },
+          { rank: 2, tag: "RUN", name: "RUNA88",        region: "Neilos", allies: 162, cities: 100, power: 609457771 },
+          { rank: 3, tag: "SYN", name: "Syndicates",    region: "Gaul",   allies: 100, cities: 72,  power: 158460863 },
+          { rank: 4, tag: "QEx", name: "0QuingEmpire0", region: "Neilos", allies: 75,  cities: 43,  power: 89790480 },
+        ],
+      },
+    ],
+  },
   449: { snapshots: [] },
 
 };
