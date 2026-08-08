@@ -52,7 +52,25 @@ const SERVERS = {
     ],
   },
 
-  441: { snapshots: [] },
+  441: {
+    snapshots: [
+      {
+        date: "09/08/2026",
+        players: [
+          { rank: 1, name: "ᴺᵒᵗNightWolf", alliance: "NOT", region: "Kingsland", power: 48093414 },
+          { rank: 2, name: "roman999",     alliance: "WCP", region: "Kingsland", power: 32738581 },
+          { rank: 3, name: "OBIw",         alliance: null,  region: "Neilos",    power: 25228823 },
+          { rank: 4, name: "ᴺᵒᵗGALAHAD",   alliance: "NOT", region: "Kingsland", power: 23614503 },
+        ],
+        alliances: [
+          { rank: 1, tag: "NOT", name: "NOTALLIANCE", region: "Olympia", allies: 126, cities: 111, power: 700852726 },
+          { rank: 2, tag: "WCP", name: "Warcorp",     region: "Tinir",   allies: 151, cities: 147, power: 629209576 },
+          { rank: 3, tag: "RAV", name: "RavenClan",   region: "Gaul",    allies: 102, cities: 75,  power: 356472718 },
+          { rank: 4, tag: "UTA", name: "Untouchable", region: "Neilos",  allies: 85,  cities: 82,  power: 313142783 },
+        ],
+      },
+    ],
+  },
   442: { snapshots: [] },
   443: { snapshots: [] },
   444: { snapshots: [] },

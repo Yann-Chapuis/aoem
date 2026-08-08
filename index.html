@@ -323,7 +323,7 @@
           ${rankCell(p.powerRank)}
           ${all ? `<td class="srv" data-goto="${p.server}">#${p.server}</td>` : ""}
           <td>${p.name}</td>
-          <td class="tag">[${p.alliance}]</td>
+          <td class="tag">${p.alliance ? `[${p.alliance}]` : `<span class="nodata">—</span>`}</td>
           <td>${p.region || "—"}</td>
           <td class="power">${fmt(p.power)}</td>
           ${deltaCell(p.delta, p.isNew)}
