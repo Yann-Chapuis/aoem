@@ -190,7 +190,7 @@
       ? `<span class="ours-badge">⭐ Our server</span>` : "";
 
     if (currentTab === "servers") {
-      metaDate.textContent = "Kingdom ranking (cumulative power of scanned alliances)";
+      metaDate.textContent = "Kingdom ranking — top 4 alliances combined power";
       content.innerHTML = renderServers();
       return;
     }
@@ -265,11 +265,10 @@
   function renderServers() {
     const rows = serverIds.map(id => {
       const s = SERVERS[id];
-      const alliancePower = s.alliances.reduce((sum, a) => sum + a.power, 0);
-      const playerPower = s.players.reduce((sum, p) => sum + p.power, 0);
+      const alliancePower = s.alliances.slice(0, 4).reduce((sum, a) => sum + a.power, 0);
       const topAlliance = s.alliances[0] || null;
       const topPlayer = s.players[0] || null;
-      return { id, date: s.date, alliancePower, playerPower, topAlliance, topPlayer };
+      return { id, date: s.date, alliancePower, topAlliance, topPlayer };
     });
     rows.sort((a, b) => b.alliancePower - a.alliancePower);
 
@@ -277,8 +276,7 @@
       <thead><tr>
         <th>#</th><th>Server</th><th>Scanned on</th>
         <th>Top alliance</th><th>Top player</th>
-        <th class="num">Σ Alliance power</th>
-        <th class="num">Σ Player power</th>
+        <th class="num">Top 4 alliances power</th>
       </tr></thead>
       <tbody>${rows.map((r, i) => `
         <tr class="${r.id === MY_SERVER ? "ours" : ""}">
@@ -288,7 +286,6 @@
           <td>${r.topAlliance ? `<span class="tag">[${r.topAlliance.tag}]</span> ${r.topAlliance.name}` : `<span class="nodata">—</span>`}</td>
           <td>${r.topPlayer ? r.topPlayer.name : `<span class="nodata">—</span>`}</td>
           <td class="power">${r.alliancePower ? fmt(r.alliancePower) : ""}</td>
-          <td class="power">${r.playerPower ? fmt(r.playerPower) : ""}</td>
         </tr>`).join("")}
       </tbody></table>`;
   }
