@@ -137,6 +137,21 @@ const SERVERS = {
           { rank: 4, tag: "mrn", name: "marion",      region: "Kyuno",   allies: 110, cities: 30, power: 81883770 },
         ],
       },
+      {
+        date: "14/08/2026",
+        players: [
+          { rank: 1, name: "GEHANAM",     alliance: "KOR", region: "Kingsland", power: 57340199 },
+          { rank: 2, name: "민초맛커피빵", alliance: "KOR", region: "Kingsland", power: 41702026 },
+          { rank: 3, name: "Capashen",    alliance: "KOR", region: "Kingsland", power: 24516118 },
+          { rank: 4, name: "PanStyx",     alliance: "JOB", region: "Kingsland", power: 23200054 },
+        ],
+        alliances: [
+          { rank: 1, tag: "KOR", name: "★KOREA",      region: "Neilos",  allies: 120, cities: 93, power: 944796483 },
+          { rank: 2, tag: "JOB", name: "Jobless",     region: "Kyuno",   allies: 143, cities: 92, power: 660727973 },
+          { rank: 3, tag: "NRG", name: "NeverRegret", region: "Olympia", allies: 115, cities: 65, power: 394753344 },
+          { rank: 4, tag: "mrn", name: "marion",      region: "Kyuno",   allies: 110, cities: 31, power: 89842478 },
+        ],
+      },
     ],
   },
   444: {
