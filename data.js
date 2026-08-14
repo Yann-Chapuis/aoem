@@ -103,6 +103,21 @@ const SERVERS = {
           { rank: 4, tag: "БОГ", name: "Мырусские", region: "Gaul",    allies: 59,  cities: 45,  power: 72639305 },
         ],
       },
+      {
+        date: "14/08/2026",
+        players: [
+          { rank: 1, name: "KociciTata", alliance: "LGV", region: "Kingsland", power: 71578752 },
+          { rank: 2, name: "Vestri",     alliance: "LGV", region: "Kingsland", power: 29249780 },
+          { rank: 3, name: "Screach",    alliance: "LGV", region: "Kingsland", power: 26483301 },
+          { rank: 4, name: "ᙎElTurcoᙎ",  alliance: "LGV", region: "Kingsland", power: 20186093 },
+        ],
+        alliances: [
+          { rank: 1, tag: "LGV", name: "LegionVI",    region: "Olympia", allies: 170, cities: 146, power: 1299852365 },
+          { rank: 2, tag: "RBN", name: "Reborn",      region: "Kyuno",   allies: 84,  cities: 120, power: 288507760 },
+          { rank: 3, tag: "БОГ", name: "Мырусские",   region: "Gaul",    allies: 60,  cities: 45,  power: 63904566 },
+          { rank: 4, tag: "OAs", name: "OceaniaApex", region: "Kyuno",   allies: 68,  cities: 37,  power: 54696689 },
+        ],
+      },
     ],
   },
   443: {
