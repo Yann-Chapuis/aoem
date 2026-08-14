@@ -224,6 +224,21 @@ const SERVERS = {
           { rank: 4, tag: "NØM", name: "NØMERCY",     region: "Gaul",     allies: 81,  cities: 22,  power: 80676389 },
         ],
       },
+      {
+        date: "14/08/2026",
+        players: [
+          { rank: 1, name: "PPGW",     alliance: "STS", region: "Kingsland", power: 40244449 },
+          { rank: 2, name: "~Bug~",    alliance: "STS", region: "Kingsland", power: 26757200 },
+          { rank: 3, name: "LordGWW",  alliance: "STS", region: "Kingsland", power: 20013569 },
+          { rank: 4, name: "Flamezor", alliance: "THO", region: "Kingsland", power: 19650645 },
+        ],
+        alliances: [
+          { rank: 1, tag: "STS", name: "SPARTANICUS",  region: "Gaul",     allies: 158, cities: 115, power: 873012058 },
+          { rank: 2, tag: "THO", name: "THEORDER",     region: "Kyuno",    allies: 165, cities: 124, power: 789424389 },
+          { rank: 3, tag: "FAM", name: "ROYALF4MILY",  region: "Eastland", allies: 82,  cities: 122, power: 328164581 },
+          { rank: 4, tag: "FRP", name: "FrostReapers", region: "Gaul",     allies: 110, cities: 36,  power: 80306128 },
+        ],
+      },
     ],
   },
   447: {
