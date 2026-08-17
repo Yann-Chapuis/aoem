@@ -476,6 +476,21 @@ const SERVERS = {
           { rank: 4, tag: "FVS", name: "FrostVanguard", region: "Tinir",    allies: 84,  cities: 36,  power: 52301205 },
         ],
       },
+      {
+        date: "17/08/2026",
+        players: [
+          { rank: 1, name: "ekivoki",     alliance: "♛RI", region: "Kingsland",      power: 27040127 },
+          { rank: 2, name: "無題Untitled", alliance: "HoV", region: "Kingsland",      power: 17816534 },
+          { rank: 3, name: "娜娜Nina",     alliance: "HoV", region: "Kingsland",      power: 15747394 },
+          { rank: 4, name: "MagicD1",     alliance: "HoV", region: "East Kingsland", power: 13037571 },
+        ],
+        alliances: [
+          { rank: 1, tag: "♛RI", name: "♛Royalty",      region: "Kyuno",    allies: 169, cities: 120, power: 729380065 },
+          { rank: 2, tag: "HoV", name: "HeroesOfValor", region: "Eastland", allies: 131, cities: 89,  power: 573474814 },
+          { rank: 3, tag: "VIP", name: "Gangstar",      region: "Neilos",   allies: 66,  cities: 52,  power: 81999487 },
+          { rank: 4, tag: "FVS", name: "FrostVanguard", region: "Tinir",    allies: 83,  cities: 37,  power: 52779220 },
+        ],
+      },
     ],
   },
 
