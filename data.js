@@ -49,6 +49,16 @@ const SERVERS = {
           { rank: 4, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 74,  cities: 115, power: 200717945 },
         ],
       },
+      {
+        date: "17/08/2026",
+        players: [
+          { rank: 1, name: "ArmyBTS",     alliance: "ROS", region: "Kingsland", power: 36024551 },
+          { rank: 2, name: "VELDORA~",    alliance: "ROS", region: "Kingsland", power: 30571221 },
+          { rank: 3, name: "Hahgwehdiyu", alliance: "N三Ø", region: "Kingsland", power: 29243330 },
+          { rank: 4, name: "acknowlegme", alliance: "N三Ø", region: "Kingsland", power: 26577717 },
+        ],
+        alliances: [],
+      },
     ],
   },
 
