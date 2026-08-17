@@ -57,7 +57,12 @@ const SERVERS = {
           { rank: 3, name: "Hahgwehdiyu", alliance: "N三Ø", region: "Kingsland", power: 29243330 },
           { rank: 4, name: "acknowlegme", alliance: "N三Ø", region: "Kingsland", power: 26577717 },
         ],
-        alliances: [],
+        alliances: [
+          { rank: 1, tag: "WAR", name: "440Dragons",     region: "Gaul",     allies: 170, cities: 161, power: 1230151684 },
+          { rank: 2, tag: "ROS", name: "RiseOfLegends™", region: "Eastland", allies: 164, cities: 137, power: 1207015108 },
+          { rank: 3, tag: "N三Ø", name: "E",              region: "Tinir",    allies: 126, cities: 115, power: 496548247 },
+          { rank: 4, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 73,  cities: 115, power: 179076807 },
+        ],
       },
     ],
   },
