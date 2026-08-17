@@ -295,6 +295,22 @@ const SERVERS = {
           { rank: 4, tag: "RTP", name: "Velociraptor",   region: "Neilos", allies: 124, cities: 38,  power: 181640662 },
         ],
       },
+      {
+        date: "17/08/2026",
+        players: [
+          { rank: 1, name: "Ragnaroks10", alliance: "PHX", region: "Kingsland",       power: 34964038 },
+          { rank: 2, name: "Khelbin戦争",  alliance: "JUD", region: "North Kingsland", power: 33270718 },
+          { rank: 3, name: "Alohagrown",  alliance: "JUD", region: "Kingsland",       power: 23733730 },
+          { rank: 4, name: "Wonju",       alliance: "JUD", region: "Kingsland",       power: 22387982 },
+          { rank: 5, name: "Pytha",       alliance: "MYT", region: "Kingsland",       power: 22320620 },
+        ],
+        alliances: [
+          { rank: 1, tag: "JUD", name: "SolemnJudgment", region: "Gaul",   allies: 169, cities: 140, power: 1316374360 },
+          { rank: 2, tag: "PHX", name: "PhoenixDynast",  region: "Neilos", allies: 166, cities: 126, power: 827276297 },
+          { rank: 3, tag: "MYT", name: "Mythos",         region: "Tinir",  allies: 118, cities: 107, power: 630226597 },
+          { rank: 4, tag: "RTP", name: "Velociraptor",   region: "Neilos", allies: 130, cities: 40,  power: 195123080 },
+        ],
+      },
     ],
   },
   446: {
