@@ -427,6 +427,21 @@ const SERVERS = {
           { rank: 4, tag: "T1S", name: "Thanatos2",     region: "Tinir",  allies: 44,  cities: 75,  power: 68785388 },
         ],
       },
+      {
+        date: "17/08/2026",
+        players: [
+          { rank: 1, name: "Halopopo",  alliance: "RUN", region: "Kingsland",      power: 46279013 },
+          { rank: 2, name: "火爆小霸王", alliance: "NR¹", region: "Kingsland",      power: 26189365 },
+          { rank: 3, name: "Thor008",   alliance: "T1S", region: "East Kingsland", power: 25111950 },
+          { rank: 4, name: "터비",       alliance: "RUN", region: "Kingsland",      power: 19355622 },
+        ],
+        alliances: [
+          { rank: 1, tag: "NR¹", name: "NightRaid¹",    region: "Kyuno",  allies: 167, cities: 134, power: 963827965 },
+          { rank: 2, tag: "RUN", name: "RUNA88",        region: "Neilos", allies: 165, cities: 113, power: 744916780 },
+          { rank: 3, tag: "QEx", name: "0QuingEmpire0", region: "Neilos", allies: 98,  cities: 48,  power: 134749801 },
+          { rank: 4, tag: "T1S", name: "Thanatos2",     region: "Tinir",  allies: 46,  cities: 75,  power: 75979777 },
+        ],
+      },
     ],
   },
   449: {
