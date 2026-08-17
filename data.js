@@ -94,6 +94,21 @@ const SERVERS = {
           { rank: 4, tag: "UTA", name: "Untouchable", region: "Neilos",  allies: 62,  cities: 88,  power: 292068834 },
         ],
       },
+      {
+        date: "17/08/2026",
+        players: [
+          { rank: 1, name: "ᴺᵒᵗNightWolf", alliance: "NOT", region: "Kingsland", power: 51241579 },
+          { rank: 2, name: "roman999",     alliance: "WCP", region: "Kingsland", power: 35871524 },
+          { rank: 3, name: "OBIw",         alliance: null,  region: "Neilos",    power: 25228823 },
+          { rank: 4, name: "ᴺᵒᵗGALAHAD",   alliance: "NOT", region: "Kingsland", power: 25208442 },
+        ],
+        alliances: [
+          { rank: 1, tag: "NOT", name: "NOTALLIANCE", region: "Olympia", allies: 142, cities: 121, power: 995873849 },
+          { rank: 2, tag: "WCP", name: "Warcorp",     region: "Tinir",   allies: 162, cities: 172, power: 881362822 },
+          { rank: 3, tag: "RAV", name: "RavenClan",   region: "Gaul",    allies: 70,  cities: 82,  power: 195137059 },
+          { rank: 4, tag: "ICE", name: "RoyaltyICE",  region: "Kyuno",   allies: 53,  cities: 47,  power: 85018363 },
+        ],
+      },
     ],
   },
   442: {
