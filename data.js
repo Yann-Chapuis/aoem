@@ -64,6 +64,21 @@ const SERVERS = {
           { rank: 4, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 73,  cities: 115, power: 179076807 },
         ],
       },
+      {
+        date: "24/08/2026",
+        players: [
+          { rank: 1, name: "ArmyBTS",      alliance: "ROS", region: "Kingsland", power: 41996761 },
+          { rank: 2, name: "VELDORA~",     alliance: "ROS", region: "Kingsland", power: 36095957 },
+          { rank: 3, name: "Hahgwehdiyu",  alliance: "N三Ø", region: "Kingsland", power: 30347901 },
+          { rank: 4, name: "QueenVisenya", alliance: "ROS", region: "Kingsland", power: 29866437 },
+        ],
+        alliances: [
+          { rank: 1, tag: "ROS", name: "RiseOfLegends™", region: "Eastland", allies: 168, cities: 138, power: 1489944284 },
+          { rank: 2, tag: "WAR", name: "440Dragons",     region: "Gaul",     allies: 167, cities: 173, power: 1436263468 },
+          { rank: 3, tag: "N三Ø", name: "E",              region: "Tinir",    allies: 128, cities: 122, power: 590597624 },
+          { rank: 4, tag: "WRE", name: "WindRiseEmpire", region: "Olympia",  allies: 75,  cities: 115, power: 179085166 },
+        ],
+      },
     ],
   },
 
