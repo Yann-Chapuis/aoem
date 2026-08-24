@@ -321,6 +321,21 @@ const SERVERS = {
           { rank: 4, tag: "LOW", name: "LegionAcademy", region: "Olympia", allies: 140, cities: 45,  power: 533462018 },
         ],
       },
+      {
+        date: "24/08/2026",
+        players: [
+          { rank: 1, name: "STONEBR0W", alliance: "LoW", region: "Kingsland", power: 52416741 },
+          { rank: 2, name: "푸른검신",   alliance: "LoW", region: "Kingsland", power: 49613098 },
+          { rank: 3, name: "LeoNn",     alliance: "Arc", region: "Kingsland", power: 33997761 },
+          { rank: 4, name: "Amanamu",   alliance: "GUE", region: "Kingsland", power: 30293723 },
+        ],
+        alliances: [
+          { rank: 1, tag: "LoW", name: "LegionOfWrath", region: "Kyuno",   allies: 168, cities: 132, power: 1628718920 },
+          { rank: 2, tag: "Arc", name: "AnatolianArc",  region: "Neilos",  allies: 163, cities: 127, power: 934997072 },
+          { rank: 3, tag: "GUE", name: "GARUDAEMPIRE",  region: "Kyuno",   allies: 168, cities: 125, power: 933246817 },
+          { rank: 4, tag: "LOW", name: "LegionAcademy", region: "Olympia", allies: 131, cities: 57,  power: 579262904 },
+        ],
+      },
     ],
   },
   445: {
