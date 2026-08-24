@@ -514,6 +514,21 @@ const SERVERS = {
           { rank: 4, tag: "ELD", name: "ELDORA",         region: "Tinir",    allies: 53,  cities: 42,  power: 80863354 },
         ],
       },
+      {
+        date: "24/08/2026",
+        players: [
+          { rank: 1, name: "Hakage",     alliance: "HUN", region: "Kingsland", power: 19726262 },
+          { rank: 2, name: "Bigaktonaj", alliance: "HUN", region: "Kingsland", power: 19484360 },
+          { rank: 3, name: "SABORGXXX",  alliance: "HUN", region: "Kingsland", power: 19225849 },
+          { rank: 4, name: "donwick",    alliance: "GFT", region: "Kingsland", power: 17591753 },
+        ],
+        alliances: [
+          { rank: 1, tag: "HUN", name: "BLODY°HUNTERS",  region: "Kyuno",    allies: 161, cities: 149, power: 950681002 },
+          { rank: 2, tag: "GFT", name: "♣GoodFernet♣",   region: "Olympia",  allies: 162, cities: 149, power: 888984011 },
+          { rank: 3, tag: "ESM", name: "EmperorsMember", region: "Eastland", allies: 63,  cities: 53,  power: 128277092 },
+          { rank: 4, tag: "ELD", name: "ELDORA",         region: "Tinir",    allies: 52,  cities: 42,  power: 84159547 },
+        ],
+      },
     ],
   },
   448: {
