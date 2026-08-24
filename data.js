@@ -129,6 +129,21 @@ const SERVERS = {
           { rank: 4, tag: "ICE", name: "RoyaltyICE",  region: "Kyuno",   allies: 53,  cities: 47,  power: 85018363 },
         ],
       },
+      {
+        date: "24/08/2026",
+        players: [
+          { rank: 1, name: "ᴺᵒᵗNightWolf", alliance: "NOT", region: "Kingsland", power: 54327119 },
+          { rank: 2, name: "roman999",     alliance: "WCP", region: "Kingsland", power: 45516658 },
+          { rank: 3, name: "ᴺᵒᵗGALAHAD",   alliance: "NOT", region: "Kingsland", power: 27864350 },
+          { rank: 4, name: "ᴺᵒᵗAtilla",    alliance: "NOT", region: "Kingsland", power: 27185326 },
+        ],
+        alliances: [
+          { rank: 1, tag: "NOT", name: "NOTALLIANCE", region: "Olympia", allies: 169, cities: 130, power: 1377805347 },
+          { rank: 2, tag: "WCP", name: "Warcorp",     region: "Tinir",   allies: 165, cities: 187, power: 1082685966 },
+          { rank: 3, tag: "RAV", name: "RavenClan",   region: "Gaul",    allies: 74,  cities: 81,  power: 137082007 },
+          { rank: 4, tag: "ICE", name: "RoyaltyICE",  region: "Kyuno",   allies: 53,  cities: 48,  power: 88702923 },
+        ],
+      },
     ],
   },
   442: {
