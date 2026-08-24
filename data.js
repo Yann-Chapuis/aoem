@@ -193,6 +193,21 @@ const SERVERS = {
           { rank: 4, tag: "OAs", name: "OceaniaApex", region: "Kyuno",   allies: 68,  cities: 37,  power: 56236573 },
         ],
       },
+      {
+        date: "24/08/2026",
+        players: [
+          { rank: 1, name: "KociciTata", alliance: "LGV", region: "Kingsland", power: 86565853 },
+          { rank: 2, name: "Vestri",     alliance: "LGV", region: "Kingsland", power: 35471892 },
+          { rank: 3, name: "Screach",    alliance: "LGV", region: "Kingsland", power: 30602838 },
+          { rank: 4, name: "ᙎElTurcoᙎ",  alliance: "LGV", region: "Kingsland", power: 25336693 },
+        ],
+        alliances: [
+          { rank: 1, tag: "LGV", name: "LegionVI",    region: "Olympia", allies: 158, cities: 161, power: 1470520184 },
+          { rank: 2, tag: "RBN", name: "Reborn",      region: "Kyuno",   allies: 135, cities: 139, power: 436160959 },
+          { rank: 3, tag: "OAs", name: "OceaniaApex", region: "Kyuno",   allies: 68,  cities: 37,  power: 60528764 },
+          { rank: 4, tag: "Qln", name: "QueerLand",   region: "Olympia", allies: 96,  cities: 26,  power: 56310025 },
+        ],
+      },
     ],
   },
   443: {
