@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AoEM — KvK Head-to-Head</title>
+<style>
+  :root {
+    --bg: #14181f;
+    --panel: #1c222c;
+    --panel2: #232b37;
+    --border: #303a48;
+    --text: #dde4ee;
+    --muted: #8b96a5;
+    --gold: #e8b23c;
+    --accent: #4da3ff;
+    --ours: #3aa477;
+    --them: #e0774a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 20px 16px 60px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+
+  .back {
+    color: var(--muted); text-decoration: none; font-size: 0.85rem;
+    display: inline-block; margin-bottom: 14px;
+  }
+  .back:hover { color: var(--text); }
+
+  header { text-align: center; margin-bottom: 20px; }
+  header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: 0.5px; }
+  header h1 .us { color: var(--ours); }
+  header h1 .them { color: var(--them); }
+  header h1 .vs { color: var(--gold); margin: 0 8px; }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+
+  /* ---- opponent picker ---- */
+  .opponents {
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    justify-content: center; margin-bottom: 22px;
+  }
+  .pick-label { color: var(--muted); font-size: 0.85rem; margin-right: 4px; }
+  .opp-pill input { position: absolute; opacity: 0; pointer-events: none; }
+  .opp-pill span {
+    display: inline-block;
+    background: var(--panel2); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 6px 13px; font-size: 0.88rem; cursor: pointer; user-select: none;
+  }
+  .opp-pill span:hover { color: var(--text); }
+  .opp-pill input:checked + span {
+    background: var(--them); border-color: var(--them);
+    color: #1d0d05; font-weight: 600;
+  }
+  .opp-pill input:focus-visible + span { outline: 2px solid var(--accent); }
+
+  /* ---- scoreboard ---- */
+  .scoreboard {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 26px;
+  }
+  .metric + .metric { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+  .metric-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 10px; font-size: 0.95rem;
+  }
+  .metric-head .label {
+    color: var(--muted); font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 1px; text-align: center; flex: 1;
+  }
+  .metric-head .v-us { color: var(--ours); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .metric-head .v-them { color: var(--them); font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+  .metric-head .sub { display: block; color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+  .bar {
+    display: flex; height: 9px; border-radius: 999px; overflow: hidden;
+    margin-top: 9px; background: var(--panel2);
+  }
+  .bar .seg-us { background: var(--ours); }
+  .bar .seg-them { background: var(--them); }
+  .verdict { text-align: center; margin-top: 8px; font-size: 0.82rem; color: var(--muted); }
+  .verdict b.lead-us { color: var(--ours); }
+  .verdict b.lead-them { color: var(--them); }
+
+  /* ---- versus tables ---- */
+  .section { margin-bottom: 30px; }
+  h2 {
+    font-size: 1.05rem; font-weight: 600; margin: 0;
+    display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  }
+  h2 .count { color: var(--muted); font-size: 0.78rem; font-weight: 400; }
+  .versus { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  @media (max-width: 820px) { .versus { grid-template-columns: 1fr; } }
+
+  .side {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .side.us { border-color: rgba(58,164,119,0.5); }
+  .side.them { border-color: rgba(224,119,74,0.5); }
+  .side-head {
+    padding: 10px 14px; font-weight: 600; font-size: 0.92rem;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  }
+  .side.us .side-head { background: rgba(58,164,119,0.14); color: var(--ours); }
+  .side.them .side-head { background: rgba(224,119,74,0.14); color: var(--them); }
+  .side-head .total { font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .side-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 8px 12px; text-align: left; white-space: nowrap; font-size: 0.88rem; }
+  th {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600;
+  }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  td.num, th.num { text-align: right; }
+  td.num { font-variant-numeric: tabular-nums; }
+  td.power { color: var(--gold); font-variant-numeric: tabular-nums; text-align: right; }
+  td.rank { width: 34px; color: var(--muted); font-weight: 700; }
+  .rank-1 { color: #ffd257; }
+  .rank-2 { color: #c8d3e0; }
+  .rank-3 { color: #d59a6b; }
+  .tag { color: var(--gold); font-weight: 600; }
+  tr.me td { background: rgba(77,163,255,0.15); }
+  tr.me td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  tr.me .name { color: var(--accent); font-weight: 600; }
+  .nodata { color: var(--muted); font-style: italic; }
+  .empty {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 40px; text-align: center; color: var(--muted); font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Back to all kingdoms</a>
+
+  <header>
+    <h1>⚔️ KvK — <span class="us" id="usTitle"></span><span class="vs">vs</span><span class="them" id="themTitle">?</span></h1>
+    <p id="scanNote"></p>
+  </header>
+
+  <div class="opponents">
+    <span class="pick-label">Opponent kingdom:</span>
+    <span id="opponentPills"></span>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const ALLIANCE_TOP = 5;
+  const PLAYER_TOP = 20;
+
+  const fmt = n => n.toLocaleString("en-US");
+  const serverIds = Object.keys(SERVERS).map(Number).sort((a, b) => a - b);
+
+  const parseDate = d => {
+    const [dd, mm, yy] = d.split("/").map(Number);
+    return new Date(yy, mm - 1, dd).getTime();
+  };
+  const snaps = id => (SERVERS[id].snapshots || [])
+    .slice().sort((a, b) => parseDate(a.date) - parseDate(b.date));
+  const latest = id => { const s = snaps(id); return s[s.length - 1] || null; };
+
+  // ---- opponent comes from ?vs=NNN, else KVK_OPPONENT in data.js ----
+  function readOpponent() {
+    const p = new URLSearchParams(location.search).get("vs");
+    const raw = p || (typeof KVK_OPPONENT !== "undefined" && KVK_OPPONENT) || null;
+    const n = Number(raw);
+    return SERVERS[n] && n !== MY_SERVER ? n : null;
+  }
+  let them = readOpponent();
+
+  document.getElementById("usTitle").textContent = "#" + MY_SERVER;
+
+  // ---- opponent pills ----
+  const pills = document.getElementById("opponentPills");
+  pills.innerHTML = serverIds.filter(id => id !== MY_SERVER).map(id =>
+    `<label class="opp-pill">
+       <input type="radio" name="vs" value="${id}" ${id === them ? "checked" : ""}>
+       <span>#${id}</span>
+     </label>`
+  ).join("");
+  pills.addEventListener("change", e => {
+    them = Number(e.target.value);
+    history.replaceState(null, "", "?vs=" + them);
+    render();
+  });
+
+  const sum = arr => arr.reduce((s, x) => s + x.power, 0);
+  const rankClass = r => r <= 3 ? ` rank-${r}` : "";
+
+  function metric(label, usVal, themVal, usSub, themSub) {
+    const total = usVal + themVal;
+    const usPct = total ? (usVal / total) * 100 : 50;
+    const diff = Math.abs(usVal - themVal);
+    const lead = usVal === themVal ? null : (usVal > themVal ? "us" : "them");
+    const smaller = Math.min(usVal, themVal);
+    const verdict = lead === null
+      ? "Dead even"
+      : `<b class="lead-${lead}">#${lead === "us" ? MY_SERVER : them}</b> leads by ${fmt(diff)}` +
+        (smaller ? ` (+${((diff / smaller) * 100).toFixed(1)}%)` : "");
+    return `<div class="metric">
+      <div class="metric-head">
+        <span class="v-us">${fmt(usVal)}${usSub ? `<span class="sub">${usSub}</span>` : ""}</span>
+        <span class="label">${label}</span>
+        <span class="v-them">${fmt(themVal)}${themSub ? `<span class="sub">${themSub}</span>` : ""}</span>
+      </div>
+      <div class="bar">
+        <div class="seg-us" style="width:${usPct}%"></div>
+        <div class="seg-them" style="width:${100 - usPct}%"></div>
+      </div>
+      <div class="verdict">${verdict}</div>
+    </div>`;
+  }
+
+  function allianceTable(side, id, list) {
+    return `<div class="side ${side}">
+      <div class="side-head"><span>#${id}</span><span class="total">${fmt(sum(list))}</span></div>
+      <div class="side-scroll"><table>
+        <thead><tr>
+          <th>#</th><th>Alliance</th>
+          <th class="num">Mem.</th><th class="num">Cities</th><th class="num">Power</th>
+        </tr></thead>
+        <tbody>${list.length ? list.map((a, i) => `
+          <tr>
+            <td class="rank${rankClass(i + 1)}">${i + 1}</td>
+            <td><span class="tag">[${a.tag}]</span> ${a.name}</td>
+            <td class="num">${a.allies != null ? fmt(a.allies) : "—"}</td>
+            <td class="num">${a.cities != null ? fmt(a.cities) : "—"}</td>
+            <td class="power">${fmt(a.power)}</td>
+          </tr>`).join("")
+          : `<tr><td colspan="5" class="nodata">No data</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+  }
+
+  function playerTable(side, id, list) {
+    return `<div class="side ${side}">
+      <div class="side-head"><span>#${id}</span><span class="total">${fmt(sum(list))}</span></div>
+      <div class="side-scroll"><table>
+        <thead><tr>
+          <th>#</th><th>Player</th><th>Alliance</th><th class="num">Power</th>
+        </tr></thead>
+        <tbody>${list.length ? list.map((p, i) => {
+          const me = id === MY_SERVER && p.name === MY_PLAYER;
+          return `
+          <tr class="${me ? "me" : ""}">
+            <td class="rank${rankClass(i + 1)}">${i + 1}</td>
+            <td class="name">${p.name}${me ? " ⭐" : ""}</td>
+            <td class="tag">${p.alliance ? `[${p.alliance}]` : `<span class="nodata">—</span>`}</td>
+            <td class="power">${fmt(p.power)}</td>
+          </tr>`; }).join("")
+          : `<tr><td colspan="4" class="nodata">No data</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+  }
+
+  function countNote(a, b, target) {
+    return (a.length >= target && b.length >= target)
+      ? "" : `<span class="count">only ${a.length} vs ${b.length} scanned</span>`;
+  }
+
+  function render() {
+    const content = document.getElementById("content");
+    const themTitle = document.getElementById("themTitle");
+    const scanNote = document.getElementById("scanNote");
+
+    if (!them) {
+      themTitle.textContent = "?";
+      scanNote.textContent = "";
+      content.innerHTML = `<div class="empty">Pick the opponent kingdom above,
+        or open this page with <b>?vs=444</b> at the end of the URL.</div>`;
+      return;
+    }
+
+    themTitle.textContent = "#" + them;
+    const usSnap = latest(MY_SERVER), themSnap = latest(them);
+
+    if (!usSnap || !themSnap) {
+      scanNote.textContent = "";
+      content.innerHTML = `<div class="empty">No scan recorded yet for
+        ${!usSnap ? "#" + MY_SERVER : ""}${!usSnap && !themSnap ? " and " : ""}${!themSnap ? "#" + them : ""}.</div>`;
+      return;
+    }
+
+    scanNote.innerHTML = usSnap.date === themSnap.date
+      ? `Both scanned on ${usSnap.date}`
+      : `#${MY_SERVER} scanned ${usSnap.date} · #${them} scanned ${themSnap.date}`;
+
+    const usAll = usSnap.alliances.slice(0, ALLIANCE_TOP);
+    const themAll = themSnap.alliances.slice(0, ALLIANCE_TOP);
+    const usPl = usSnap.players.slice(0, PLAYER_TOP);
+    const themPl = themSnap.players.slice(0, PLAYER_TOP);
+
+    const topAllUs = usAll[0], topAllThem = themAll[0];
+    const topPlUs = usPl[0], topPlThem = themPl[0];
+
+    content.innerHTML = `
+      <div class="scoreboard">
+        ${metric(`Top ${ALLIANCE_TOP} alliances — total power`, sum(usAll), sum(themAll))}
+        ${metric(`Top ${PLAYER_TOP} players — total power`, sum(usPl), sum(themPl))}
+        ${metric("Strongest alliance",
+            topAllUs ? topAllUs.power : 0, topAllThem ? topAllThem.power : 0,
+            topAllUs ? `[${topAllUs.tag}] ${topAllUs.name}` : "",
+            topAllThem ? `[${topAllThem.tag}] ${topAllThem.name}` : "")}
+        ${metric("Strongest player",
+            topPlUs ? topPlUs.power : 0, topPlThem ? topPlThem.power : 0,
+            topPlUs ? topPlUs.name : "", topPlThem ? topPlThem.name : "")}
+        ${metric("Members in those alliances",
+            usAll.reduce((s, a) => s + (a.allies || 0), 0),
+            themAll.reduce((s, a) => s + (a.allies || 0), 0))}
+        ${metric("Cities held",
+            usAll.reduce((s, a) => s + (a.cities || 0), 0),
+            themAll.reduce((s, a) => s + (a.cities || 0), 0))}
+      </div>
+
+      <div class="section">
+        <h2>🏰 Top ${ALLIANCE_TOP} alliances ${countNote(usAll, themAll, ALLIANCE_TOP)}</h2>
+        <div class="versus">
+          ${allianceTable("us", MY_SERVER, usAll)}
+          ${allianceTable("them", them, themAll)}
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>⚔️ Top ${PLAYER_TOP} players ${countNote(usPl, themPl, PLAYER_TOP)}</h2>
+        <div class="versus">
+          ${playerTable("us", MY_SERVER, usPl)}
+          ${playerTable("them", them, themPl)}
+        </div>
+      </div>`;
+  }
+
+  render();
+</script>
+</body>
+</html>

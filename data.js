@@ -14,6 +14,8 @@
 // ============================================================
 
 const MY_SERVER = 445; // our server
+const MY_PLAYER = "Pytha"; // highlighted on the KvK page
+const KVK_OPPONENT = null;  // default KvK opponent (overridden by ?vs=NNN in the URL)
 
 const SERVERS = {
 
