@@ -15,7 +15,7 @@
 
 const MY_SERVER = 445; // our server
 const MY_PLAYER = "Pytha"; // highlighted on the KvK page
-const KVK_OPPONENT = null;  // default KvK opponent (overridden by ?vs=NNN in the URL)
+const KVK_OPPONENT = 444;  // KvK opponent — /kvk/ opens 445 vs 444 (override with ?vs=NNN)
 
 const SERVERS = {
 
@@ -401,6 +401,37 @@ const SERVERS = {
           { rank: 2, tag: "PHX", name: "PhoenixDynast",  region: "Neilos", allies: 159, cities: 137, power: 890515581 },
           { rank: 3, tag: "MYT", name: "Mythos",         region: "Tinir",  allies: 114, cities: 116, power: 687156967 },
           { rank: 4, tag: "RTP", name: "Velociraptor",   region: "Neilos", allies: 130, cities: 44,  power: 216089667 },
+        ],
+      },
+      {
+        date: "30/08/2026",
+        players: [
+          { rank: 1,  name: "Khelbin戦争",  alliance: "JUD", region: "North Kingsland", power: 39927127 },
+          { rank: 2,  name: "Ragnaroks10", alliance: "PHX", region: "Kingsland",       power: 39577924 },
+          { rank: 3,  name: "Wonju",       alliance: "JUD", region: "Kingsland",       power: 29374243 },
+          { rank: 4,  name: "Pytha",       alliance: "MYT", region: "Kingsland",       power: 27562899 },
+          { rank: 5,  name: "Misterg2b",   alliance: "PHX", region: "Kingsland",       power: 24953444 },
+          { rank: 6,  name: "Alohagrown",  alliance: "JUD", region: "North Kingsland", power: 24596573 },
+          { rank: 7,  name: "enice",       alliance: "JUD", region: "Kingsland",       power: 24436571 },
+          { rank: 8,  name: "MaximusRahL", alliance: "JUD", region: "Kingsland",       power: 23436214 },
+          { rank: 9,  name: "ραραγαms",    alliance: "JUD", region: "Kingsland",       power: 21406887 },
+          { rank: 10, name: "쭈남매",       alliance: "JUD", region: "Kingsland",       power: 19513705 },
+          { rank: 11, name: "RagnarKingdm",alliance: "JUD", region: "Kingsland",       power: 19140363 },
+          { rank: 12, name: "Kneestomper", alliance: "JUD", region: "Kingsland",       power: 18102744 },
+          { rank: 13, name: "TORRET",      alliance: "STM", region: "Eastland",        power: 17427830 },
+          { rank: 14, name: "RubDuckie",   alliance: "MYT", region: "Kingsland",       power: 16542992 },
+          { rank: 15, name: "MrEducator",  alliance: "ANT", region: "Kingsland",       power: 16109632 },
+          { rank: 16, name: "Locatos",     alliance: "JUD", region: "Kingsland",       power: 16059072 },
+          { rank: 17, name: "Panøramix♛",  alliance: "JUD", region: "Kingsland",       power: 15791045 },
+          { rank: 18, name: "Chetq",       alliance: "JUD", region: "Kingsland",       power: 15605050 },
+          { rank: 19, name: "병키",         alliance: "MYT", region: "Kingsland",       power: 15198645 },
+          { rank: 20, name: "InHarmsWay",  alliance: "MYT", region: "Kingsland",       power: 14889871 },
+        ],
+        alliances: [
+          { rank: 1, tag: "JUD", name: "SolemnJudgment", region: "Gaul",   allies: 168, cities: 160, power: 1606189244 },
+          { rank: 2, tag: "PHX", name: "PhoenixDynast",  region: "Neilos", allies: 162, cities: 146, power: 963172529 },
+          { rank: 3, tag: "MYT", name: "Mythos",         region: "Tinir",  allies: 104, cities: 121, power: 695080262 },
+          { rank: 4, tag: "RTP", name: "Velociraptor",   region: "Neilos", allies: 130, cities: 47,  power: 242483282 },
         ],
       },
     ],
